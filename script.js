@@ -5,12 +5,20 @@ function createElement(text) {
   return square;
 }
 
-function addElement() {
+function addElement(num) {
   const container = document.querySelector(".grid-container");
-  for (let i = 0; i < 256; i++) {
+  for (let i = 0; i < num; i++) {
     container.appendChild(createElement(i));
   }
 }
+
+function removeElement(num) {
+  const container = document.querySelector(".grid-container");
+  for (let i = 0; i < num; i++) {
+    container.removeChild(container.lastElementChild);
+  }
+}
+
 function changeCSS(element, styleName, style) {
   // Getting the stylesheet
   const stylesheet = document.styleSheets[0];
@@ -27,5 +35,19 @@ function changeCSS(element, styleName, style) {
   elementRules.style.setProperty(styleName, style);
 }
 
-addElement();
-// changeCSS(":root", "--gridSize", 20);
+function changeGridSize(newSize) {
+  changeCSS(":root", "--gridSize", newSize);
+
+  const newTotal = Math.pow(newSize, 2);
+  const oldTotal = document.querySelector(".grid-container").childElementCount;
+
+  if (newTotal > oldTotal) {
+    addElement(newTotal - oldTotal);
+  } else if (newTotal < oldTotal) {
+    removeElement(oldTotal - newTotal);
+    console.log(`${newTotal} < ${oldTotal}`);
+  }
+}
+
+addElement(Math.pow(16, 2));
+// changeGridSize(18);
