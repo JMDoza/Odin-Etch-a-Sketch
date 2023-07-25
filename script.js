@@ -1,14 +1,17 @@
 function createElement(text) {
   let square = document.createElement("div");
   square.classList.add("square");
-  square.textContent = text;
+  //   square.textContent = text;
+  square.addEventListener("mouseover", () => {
+    square.classList.add("hover");
+  });
   return square;
 }
 
 function addElement(num) {
   const container = document.querySelector(".grid-container");
   for (let i = 0; i < num; i++) {
-    container.appendChild(createElement(i));
+    container.appendChild(createElement());
   }
 }
 
@@ -49,5 +52,26 @@ function changeGridSize(newSize) {
   }
 }
 
+function promptUser() {
+  const button = document.querySelector("button");
+  button.addEventListener("click", () => {
+    const value = prompt("Enter new grid size (x*x) within 100");
+  });
+}
+
+function setSlider() {
+  var slider = document.getElementById("myRange");
+  var output = document.getElementById("gridSize");
+  output.textContent = slider.value + " x " + slider.value;
+
+  slider.oninput = function () {
+    output.textContent = this.value + " x " + this.value;
+    const coloredGrid = document.querySelectorAll(".hover");
+    coloredGrid.forEach((element) => {
+      element.classList.remove("hover");
+    });
+    changeGridSize(this.value);
+  };
+}
 addElement(Math.pow(16, 2));
-// changeGridSize(18);
+setSlider();
